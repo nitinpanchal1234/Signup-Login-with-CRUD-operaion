@@ -4,7 +4,6 @@ from .models import Employee
 from django.http import HttpResponse, HttpResponseBadRequest
 # from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
-# from .forms import SearchForm
 
 
 # Create your views here.
