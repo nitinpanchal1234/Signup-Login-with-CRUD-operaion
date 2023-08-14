@@ -4,6 +4,8 @@ from .models import Employee
 from django.http import HttpResponse, HttpResponseBadRequest
 # from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
+# from .forms import SearchForm
+
 
 # Create your views here.
 def home(request):
@@ -39,8 +41,12 @@ def login_action(request):
                 'emp_data_1' : emp_data_1
             }
             return render(request, 'show.html', dict_1)
-        except Signup.DoesNotExist:
-            return HttpResponse('User does not found please signup and login again')
+        except ObjectDoesNotExist:
+            dict = {
+                'msg' : 'User does not found please Signup or Login again'
+            }
+            return render(request, 'login.html', dict)
+            # return HttpResponse('User does not found please Signup or Login again')
             redirect('/login')
 
 def add_emp(request):
@@ -110,11 +116,24 @@ def delete_emp(request, id):
             'emp_data' : emp_data
         }
         return render(request, 'view_all_emp.html', dict)
+    
+def search(request):
+    emp_data = Employee.objects.all()
 
-
-
-
-
-
-
-
+    # Search functionality
+    search_query = request.GET.get('search')
+    if search_query:
+        emp_data = Employee.objects.filter(
+            name__icontains=search_query 
+            # You can add more filters based on your Employee model fields
+        )
+    if search_query:
+        emp_data = Employee.objects.filter(
+            email__icontains=search_query 
+            # You can add more filters based on your Employee model fields
+        )
+    context = {
+        'emp_data': emp_data,
+        'search_query': search_query
+    }
+    return render(request, 'search.html', context)
