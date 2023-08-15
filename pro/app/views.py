@@ -1,12 +1,9 @@
 from django.shortcuts import render, redirect
-from .models import Signup
-from .models import Employee
-from django.http import HttpResponse, HttpResponseBadRequest
-# from django.contrib import messages
-from django.core.exceptions import ObjectDoesNotExist
-
+from .models import Signup, Employee
+from django.http import HttpResponse
 
 # Create your views here.
+
 def home(request):
     return render(request, 'home.html')
 
@@ -35,16 +32,12 @@ def login_action(request):
         password = request.POST['password']
         try:
             login_data = Signup.objects.get(email=email, password=password)
-            emp_data_1 = [login_data]
-            dict_1 = {
-                'emp_data_1' : emp_data_1
+            return render(request, 'show.html')
+        except Exception as message:
+            message = {
+                'message' : 'User Does Not Found Please Signup or Login again'
             }
-            return render(request, 'show.html', dict_1)
-        except ObjectDoesNotExist:
-            dict = {
-                'msg' : 'User does not found please Signup or Login again'
-            }
-            return render(request, 'login.html', dict)
+            return render(request, 'login.html', message)
             # return HttpResponse('User does not found please Signup or Login again')
             redirect('/login')
 

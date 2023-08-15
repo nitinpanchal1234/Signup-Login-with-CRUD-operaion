@@ -21,6 +21,7 @@
     </head>
     <body>
         <h1 style="text-align: center; color:blue"><u>Login Here</u></h1> <hr>
+        <p style="text-align: center; color:red">{{message}}</p>
         <form method="POST" action="{% url 'login_action' %}">
             {% csrf_token %}
             <div class="form-group">
