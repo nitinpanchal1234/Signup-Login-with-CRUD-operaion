@@ -15,5 +15,8 @@ class Employee(models.Model):
     salary = models.IntegerField()
     bonus = models.IntegerField()
 
+    class Meta:
+        ordering = ['-id']
+
 
     
