@@ -1,6 +1,5 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 from .models import Signup, Employee
-from django.http import HttpResponse
 
 # Create your views here.
 
@@ -35,12 +34,10 @@ def login_action(request):
             return render(request, 'show.html')
         except Exception as message:
             message = {
-                'message' : 'User Does Not Found Please Signup or Login again'
+                'message' : 'User Details Does not Match Please Signup or Login again'
             }
             return render(request, 'login.html', message)
-            # return HttpResponse('User does not found please Signup or Login again')
-            redirect('/login')
-
+           
 def add_emp(request):
     return render(request, 'add_emp.html')
 def add_emp_action(request):
@@ -124,6 +121,13 @@ def search(request):
             email__icontains=search_query 
             # You can add more filters based on your Employee model fields
         )
+
+    if search_query:
+        emp_data = Employee.objects.filter(
+            mobile__icontains=search_query 
+            # You can add more filters based on your Employee model fields
+        )
+        
     context = {
         'emp_data': emp_data,
         'search_query': search_query
